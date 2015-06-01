@@ -1,0 +1,8 @@
+.menu-icon {
+	margin-right: -30px;
+}
+
+.top-bar-section ul li > a.button {
+	@include button-style($bg:$header-bg-color);
+	border: 1px solid $header-button-border-color;
+}

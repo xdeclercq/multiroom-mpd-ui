@@ -1,0 +1,92 @@
+$zone-bg-colors: $color-primary-0, 
+              $color-secondary-1-0,
+              $color-secondary-2-0, 
+              $color-complement-0,
+              $color-primary-1, 
+              $color-secondary-1-1,
+              $color-secondary-2-1, 
+              $color-complement-1,
+              $color-primary-2, 
+              $color-secondary-1-2,
+              $color-secondary-2-2, 
+              $color-complement-2,
+              $color-primary-3, 
+              $color-secondary-1-3,
+              $color-secondary-2-3, 
+              $color-complement-3;
+
+
+@for $i from 1 through 64 {
+  $j: $i - 1;
+  $color-idx: $j % length($zone-bg-colors) + 1;
+  .zone-#{$i} {
+    position: relative;
+    background-color: nth($zone-bg-colors, $color-idx);
+    padding: 5px;
+  }
+}
+
+.zone-name {
+  letter-spacing: 0.1em;
+  color: $white;  
+  width: 100%;
+  font-size: 1.4em;
+  font-family: $font-sans-serif;
+  font-weight: 500;
+  text-shadow: 2px 2px 5px $black-dark;
+}
+
+.zone-player {
+  display: block;
+  position: absolute;
+  right: 0px;
+  margin: auto;
+  padding: 5px;
+  width: 100%;
+  height: auto;
+  &>a>i {
+    text-shadow: 2px 2px 5px $black-dark;
+    color: $white;
+    margin-left: 7px;
+    margin-right: 7px;
+    font-size: 1.8em;
+
+    &:hover {
+      color: $white-dark;
+    }
+
+    &:active {
+      color: red;
+    }
+  }
+}
+
+.zone-horizontal {
+  width: 100%;
+  .zone-label {
+    text-align: left;
+  }
+  .zone-player {
+    bottom: 0px;
+    text-align: right;
+  }
+}
+
+@mixin vertical-align {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.zone-vertical {
+  height: 100%;
+  float: left;
+  .zone-label {
+    text-align: center;
+  }
+  &>.zone-player {
+    text-align: center;
+    @include vertical-align;
+  }
+}

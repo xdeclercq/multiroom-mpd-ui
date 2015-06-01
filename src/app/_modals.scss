@@ -1,0 +1,36 @@
+.reveal-modal.small {
+  border: none;
+  padding: 1rem;
+  
+  h3 {
+    color: $modal-title-color;
+    margin-top: 0;
+    font-size: 1.2875rem;
+  }
+  input[type="text"] {
+    background-color: $modal-input-bg-color;
+    border: 1px solid $modal-input-border-color;
+    color: $modal-input-color;
+    box-shadow: none;
+    margin-top: 10px;    
+
+    &:focus {
+      background-color: $modal-input-bg-color;
+    }
+  }
+  button.tiny.right {
+    @include button-style($bg:$modal-button-bg-color);
+    margin-bottom: 0;
+    padding: 0.4rem 1rem 0.44rem;
+    font-size: 0.8rem;
+    border: 1px solid $modal-button-border-color;
+    color: $modal-button-color;
+  }
+
+  .close-reveal-modal {
+    color: $modal-close-color;
+    &:hover {
+      color: scale-color($modal-close-color, $lightness: -15%);
+    }
+  }
+}

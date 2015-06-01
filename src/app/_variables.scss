@@ -1,0 +1,45 @@
+$color-primary-0: #1D3644;
+$color-primary-1: #3E5460;
+$color-primary-2: #2B3E48;
+$color-primary-3: #122C3A;
+$color-primary-4: #071F2C;
+
+$color-secondary-1-0: #437F06;
+$color-secondary-1-1: #67C706;
+$color-secondary-1-2: #569F0B;
+$color-secondary-1-3: #295200;
+$color-secondary-1-4: #1A3400;
+
+$color-secondary-2-0: #1E4B34;
+$color-secondary-2-1: #436A56;
+$color-secondary-2-2: #2E4F3E;
+$color-secondary-2-3: #114029;
+$color-secondary-2-4: #06301B;
+
+$color-complement-0: #D36947;
+$color-complement-1: #FFB9A3;
+$color-complement-2: #F59373;
+$color-complement-3: #B54926;
+$color-complement-4: #8F2C0D;
+
+$font-sans-serif: Raleway;//, Helvetica, Roboto, Arial, sans-serif;
+
+$white: #DDD;
+$white-dark: scale-color($white, $lightness: -40%);
+$black: #333;
+$black-dark: scale-color($black, $lightness: -40%);
+
+$header-bg-color: $black;
+$header-button-bg-color: $black;
+$header-button-border-color: $black-dark;
+
+$modal-bg-color: $black;
+$modal-button-color: $white;
+$modal-button-bg-color: $black;
+$modal-button-border-color: $black-dark;
+$modal-title-color: $white;
+$modal-input-color: $white;
+$modal-input-bg-color: $black;
+$modal-input-border-color: $black-dark;
+$modal-close-color: $black-dark;
+

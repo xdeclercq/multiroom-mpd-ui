@@ -1,0 +1,18 @@
+<div on-resize="resizeZone(w, h)"
+     ng-class="['zone-'+ ($index+1), zoneClass]"
+     ng-style="{'zone-vertical': {width: (100 / (zones.length)) + '%'}, 'zone-horizontal': {height: (100 / (zones.length)) + '%'}}[zoneClass]"
+     ng-repeat="zone in zones">
+  <div class="zone-name">{{zone.name | lowercase}}</div>
+  <div class="zone-player">
+  	<a>status: {{status}}<a>
+  	<a ng-click="play(zone)"><i class="fa fa-play"></i></a>
+  	<a ng-click="pause(zone)"><i class="fa fa-pause"></i></a>
+  	<a ng-click="stop(zone)"><i class="fa fa-stop"></i><a>
+  </div>
+</div>
+<div ui-view>
+
+
+
+
+

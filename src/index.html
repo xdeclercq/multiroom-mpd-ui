@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app="multiroom">
+	<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Multiroom</title>
+    <!-- inject:app-style:css --><!-- endinject -->
+	</head>
+	<body>
+    <div class="container">
+      <ng-include class="header" src="'app/header/header.tpl.html'"></ng-include>
+      <div class="content" ui-view></div>
+      <div class="footer"></div>
+    </div>
+
+    <!-- inject:vendor:js --><!-- endinject -->
+    <!-- inject:app:js --><!-- endinject -->
+    <!-- inject:templates:js --><!-- endinject -->
+  </body>
+</html>
