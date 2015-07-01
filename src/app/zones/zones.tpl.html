@@ -4,9 +4,8 @@
      ng-repeat="zone in zones">
   <div class="zone-name">{{zone.name | lowercase}}</div>
   <div class="zone-player">
-  	<a>status: {{status}}<a>
-  	<a ng-click="play(zone)"><i class="fa fa-play"></i></a>
-  	<a ng-click="pause(zone)"><i class="fa fa-pause"></i></a>
+  	<a ng-show="playerStatuses[zone.name] !== 'PLAYING'" ng-click="play(zone)"><i class="fa fa-play"></i></a>
+  	<a ng-hide="playerStatuses[zone.name] !== 'PLAYING'" ng-click="pause(zone)"><i class="fa fa-pause"></i></a>
   	<a ng-click="stop(zone)"><i class="fa fa-stop"></i><a>
   </div>
 </div>

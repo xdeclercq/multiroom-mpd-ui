@@ -32,7 +32,5 @@
     "foundation": "~5.5.1",
     "raleway": "~1.0.0",
     "angular-hal": "~0.1.5",
-    "atmosphere": "~2.2.7",
-    "angular-websocket": "~1.0.9"
   }
 }

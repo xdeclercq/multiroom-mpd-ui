@@ -1,4 +1,4 @@
-angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSocket'])
+angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new'])
 .config(['$stateProvider', function($stateProvider) {
   $stateProvider.state('zones', {
     url: '/zones',
@@ -10,52 +10,6 @@ angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSoc
   });
 }])
 
-.factory('oldZones', ['$rootScope', '$log', function($rootScope, $log) {
-
-  return {
-    getAll: function() {
-      return $rootScope.apiRoot.then(function(root) {
-        return root.$get('mr:zones');
-      }).then(function(zones) {
-        if (zones.$has('mr:zone')) {
-          return zones.$get('mr:zone');
-        }
-        return [];
-      }).then(function(zones) {
-        if (zones.constructor !== Array) {
-          return [zones];
-        }
-        return zones;
-      });
-    },
-
-    play: function(zone) {
-      zone.$get('mr:player').then(function(player) {
-        player.$post('mr:play');
-      });
-    },
-
-    pause: function(zone) {
-      zone.$get('mr:player').then(function(player) {
-        player.$post('mr:pause');
-      });
-    },
-
-    stop: function(zone) {
-      zone.$get('mr:player').then(function(player) {
-        player.$post('mr:stop');
-      });
-    },
-
-    getStatus: function() {
-      return {
-        onUpdate: function() {
-
-        }
-      };
-    }
-  };
-}])
 
 .factory('Zones', ['$rootScope', '$log', function($rootScope, $log) {
   var zones;
@@ -118,46 +72,29 @@ angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSoc
       });
     };
 
-    var request = {
-      url: 'ws://localhost:8080/multiroom-mpd/ws/zones/' + zoneName + '/player/status',
-      contentType : "application/hal+json",
-      logLevel : 'debug',
-      transport : 'websocket' ,
-      fallbackTransport: 'long-polling',
-      enableXDR: true
-    };
+    var ws = new WebSocket('ws://localhost:8080/multiroom-mpd/ws/zones/' + zoneName + '/player/status');
 
-    request.onOpen = function(response) {
+    ws.onopen = function(response) {
       $log.info('Atmosphere connected using ' + response.transport);
     };
 
-    request.onReconnect = function (request, response) {
-      $log.info("Reconnecting");
-    };
+    var onUpdateStatus;
 
-    var onUpdateCallback;
-
-    request.onMessage = function (response) {
-      var message = response.responseBody;
+    ws.onmessage = function (message) {
       try {
-        var newStatus = JSON.parse(message);  
-        $log.debug('new status: ' + newStatus);
-        if (onUpdateCallback) {
-          onUpdateCallback(newStatus);
-        }
+        var newStatus = JSON.parse(message.data).status;
+        onUpdateStatus(newStatus);
+        $log.debug('[' + zoneName + '] new status: ' + newStatus);
       } catch (e) {
-        $log.error('Error: ' + message);
+        $log.error('Error: ' + message.data);
         return;
       }
 
     };
 
-    request.onError = function(response) {
+    ws.onerror = function(response) {
       $log.error('Error: ' + response);
     };
-
-    var socket = atmosphere;
-    var subSocket = socket.subscribe(request);
 
     refresh();
 
@@ -203,8 +140,8 @@ angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSoc
       //   });
       // },
 
-      onUpdate: function(callback) {
-        onUpdateCallback = callback;
+      status: function(callback) {
+        onUpdateStatus = callback;
       }
     };
 
@@ -221,13 +158,22 @@ angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSoc
 .controller('ZonesCtrl', ['$scope', '$state', 'Zones', '$log', function($scope, $state, Zones, $log) {
 
   $scope.zones = [];
+
+  $scope.playerStatuses = {};
   
   Zones.getAll().then(function(zones) {
     if (zones.length === 0) {
       $state.go('zones.new');
       return;
     }
-    $scope.zones = zones;  
+    zones.forEach(function(zone) {
+      Zones.getPlayer(zone.name).status(function(newStatus) {
+        $scope.playerStatuses[zone.name] = newStatus;
+        $scope.$apply();
+      });
+    });
+    $scope.zones = zones;
+
   });
 
   $scope.$on('zone-created', function(e, data) {
@@ -254,5 +200,10 @@ angular.module('multiroom.zones', ['ui.router', 'multiroom.zones.new', 'ngWebSoc
   $scope.stop = function(zone) {
     Zones.getPlayer(zone.name).stop();
   };
+
+  $scope.status = function(zone) {
+    return Zones.getPlayer(zone.name).status();
+  };
+
 }])
 ;
